@@ -9,7 +9,13 @@
 				border:2px solid #000;
 				resize: none;
 				overflow:hidden;
-			}	
+			}
+			.connectors{
+				width:20px;
+				height:20px;
+				border:2px solid #000;
+				border-radius:10px;
+			}
 		</style>
 		<meta charset="utf-8" />
 		<title>DRAKON</title>
@@ -19,6 +25,8 @@
 			<canvas id="index" height='900px' width='620px'style="outline: 2px solid #000;position:absolute;top:1px;left:1px;"></canvas>
 		</div>
 		<br>
+		<button onclick="obj='jump'">goto</button>
+		<button onclick="obj='mark'">Метка</button>
 		<button onclick="obj='action'">Действие</button>
 		<button onclick="obj='question'">if</button>
 		<button onclick="obj='for_start'">Начало for</button>
