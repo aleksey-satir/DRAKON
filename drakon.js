@@ -10,6 +10,10 @@ function action(x, y){
 	ctx.beginPath();
 	ctx.moveTo(x, y);
 	ctx.rect(x, y, 120, 40);
+	ctx.moveTo(x+60, y);
+	ctx.lineTo(x+60, y-20);
+	ctx.moveTo(x+60, y+40);
+	ctx.lineTo(x+60, y+60);
 	ctx.fill();
 	ctx.stroke();         
 	ctx.closePath();
@@ -23,6 +27,10 @@ function question(x, y){
 	ctx.lineTo(x+20, y+40);
 	ctx.lineTo(x, y+20);
 	ctx.lineTo(x+20, y);
+	ctx.moveTo(x+60, y);
+	ctx.lineTo(x+60, y-20);
+	ctx.moveTo(x+60, y+40);
+	ctx.lineTo(x+60, y+60);
 	ctx.fill();
 	ctx.stroke();
 	ctx.closePath();
@@ -36,6 +44,10 @@ function for_start(x, y){
 	ctx.lineTo(x, y+40);
 	ctx.lineTo(x, y+20);
 	ctx.lineTo(x+20, y);
+	ctx.moveTo(x+60, y);
+	ctx.lineTo(x+60, y-20);
+	ctx.moveTo(x+60, y+40);
+	ctx.lineTo(x+60, y+60);
 	ctx.fill();
 	ctx.stroke();
 	ctx.closePath();
@@ -49,115 +61,109 @@ function for_finish(x, y){
 	ctx.lineTo(x+20, y+40);
 	ctx.lineTo(x, y+20);
 	ctx.lineTo(x, y);
+	ctx.moveTo(x+60, y);
+	ctx.lineTo(x+60, y-20);
+	ctx.moveTo(x+60, y+40);
+	ctx.lineTo(x+60, y+60);
 	ctx.fill();
 	ctx.stroke();
 	ctx.closePath();
 }
-function connecter(start, finish){
-	
+function jump(x, y){
+	ctx.beginPath();
+	ctx.moveTo(x+60, y-20);
+	ctx.lineTo(x+60, y+60);
+	ctx.moveTo(x+100, y+60);
+	ctx.lineTo(x+20, y+60);
+	ctx.moveTo(x+55, y+40);
+	ctx.lineTo(x+60, y+60);
+	ctx.lineTo(x+65, y+40);
+	ctx.stroke();
+	ctx.closePath();
+}
+function mark(x, y){
+	ctx.beginPath();
+	ctx.moveTo(x+60, y-20);
+	ctx.lineTo(x+60, y+60);
+	ctx.moveTo(x+80, y+15);
+	ctx.lineTo(x+60, y+20);
+	ctx.lineTo(x+80, y+25);
+	ctx.moveTo(x+60, y+20);
+	ctx.lineTo(x+120, y+20);
+	ctx.stroke();
+	ctx.closePath();
+}
+function draw_obj(o, x, y){
+	if(o=="action"){
+		action(x, y);
+	}
+	else if(o=="question"){
+		question(x, y);
+	}
+	else if(o=="for_start"){
+		for_start(x, y);
+	}
+	else if(o=="for_finish"){
+		for_finish(x, y);
+	}
+	else if(o=="mark"){
+		mark(x, y);
+	}
+	else if(o=="jump"){
+		jump(x, y);
+	}
 }
 function remember(list){
 	//ctx.clearRect(0, 0, a.width, a.height);
 	for(var i=0; i<list.length;i++){
 		var a=list[i][1];
 		var b=list[i][2];
-
-		if(list[i][0]=="action"){
-			action(a, b);
-		}
-		else if(list[i][0]=="question"){
-			question(a, b);
-		}
-		else if(list[i][0]=="for_start"){
-			for_start(a, b);
-		}
-		else if(list[i][0]=="for_finish"){
-			for_finish(a, b);
-		}
+		o=list[i][0];
+		draw_obj(o, a, b);
 	}
 }
-arr=[];
 
-function menu(obj, num){
-        var textarea=document.createElement('input');
-	var del=document.createElement('button');
-	var connect=document.createElement('button');
-	textarea.style.position="absolute";
-	textarea.style.left=650+"px";
-	textarea.style.top=20+"px";
-	function clear_menu(){
-		textarea.remove();
-		del.remove();
-		connect.remove();
-	}
-	del.onclick=function(){
-		clear_menu();
-		canvas.splice(num, 1);
-		ctx.clearRect(0, 0, a.width, a.height);
-		remember(canvas);
-	}
-	del.innerHTML="Удалить";
-	del.style.position="absolute";
-	del.style.left=650+"px";
-	del.style.top=60+"px";
 
-	connect.onclick="";
-	connect.innerHTML="Соединить";
-	connect.style.position="absolute";
-	connect.style.left=650+"px";
-	connect.style.top=100+"px";
-	
-	b.appendChild(textarea);
-	b.appendChild(del);
-	b.appendChild(connect);
-	textarea.focus();
-
-	txt=textarea.value;
+function menu(num_of_obj){
 }
 
-var x, y, draw;
+var x, y, draw, num=0;
 a.addEventListener('mousedown', e => {
 	x=e.clientX;
 	y=e.clientY;
 	draw=1;
 	for(var i=0; i<canvas.length;i++){
 		if(x<=canvas[i][1]+120 && x>=canvas[i][1] && y<=canvas[i][2]+40 && y>=canvas[i][2]){
-			menu(canvas[i][0], i);
-			draw=0;
+			draw=2;
+			num=i;
+			break;
 		}
 	}
 });
 
 a.addEventListener('mousemove', e => {
-	if(draw==1){
+	if(draw>0){
+		if(draw==2){
+			canvas[num][1]=x;
+			canvas[num][2]=y;
+			obj=canvas[num][0];
+		}
 		ctx.clearRect(0, 0, a.width, a.height);
 		remember(canvas);
 		x=Math.trunc(e.clientX/120)*130+25;
-		y=Math.trunc(e.clientY/40)*40+25;
-		if(obj=="action"){
-			action(x, y);
-		}
-		else if(obj=="question"){
-			question(x, y);
-		}
-		else if(obj=="for_start"){
-			for_start(x, y);
-		}
-		else if(obj=="for_finish"){
-			for_finish(x, y);
-		}
-			
+		y=Math.trunc(e.clientY/80)*80+25;
+		draw_obj(obj, x, y);	
 	}
 });
 
 a.addEventListener('mouseup', e => {
-	if(draw==1){
-		canvas.push([obj, x, y, '']);
-		menu(obj, canvas.lenght+1);
+	if(draw>0){
+		if(draw==1){
+			canvas.push([obj, x, y, '']);
+		}
+		menu(canvas.length-1);
 		x=undefined; 
 		y=undefined;
 		draw=0;
 	}
 });
-
-
