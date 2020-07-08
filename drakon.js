@@ -16,7 +16,7 @@ function action(x, y, text){
 	ctx.lineTo(x+60, y+60);
 	ctx.fill();
 	ctx.fillStyle="#000";
-	ctx.fillText(text, x+20, y+25, 80); 
+	ctx.fillText(text, x+45, y+25, 80); 
 	ctx.fillStyle="#c2a894";
 	ctx.stroke();         
 	ctx.closePath();
@@ -36,7 +36,7 @@ function question(x, y, text){
 	ctx.lineTo(x+60, y+60);
 	ctx.fill();
 	ctx.fillStyle="#000";
-	ctx.fillText(text, x+20, y+25, 80); 
+	ctx.fillText(text, x+45, y+25, 80); 
 	ctx.fillStyle="#c2a894";
 	ctx.stroke();
 	ctx.closePath();
@@ -56,7 +56,7 @@ function for_start(x, y, text){
 	ctx.lineTo(x+60, y+60);
 	ctx.fill();
 	ctx.fillStyle="#000";
-	ctx.fillText(text, x+20, y+25, 80); 
+	ctx.fillText(text, x+45, y+25, 80); 
 	ctx.fillStyle="#c2a894";
 	ctx.stroke();
 	ctx.closePath();
@@ -87,6 +87,9 @@ function jump(x, y){
 	ctx.moveTo(x+55, y+40);
 	ctx.lineTo(x+60, y+60);
 	ctx.lineTo(x+65, y+40);
+	ctx.fillStyle="#000";
+	ctx.fillText(text, x+5, y+25, 60); 
+	ctx.fillStyle="#c2a894";
 	ctx.stroke();
 	ctx.closePath();
 }
@@ -99,6 +102,9 @@ function mark(x, y){
 	ctx.lineTo(x+80, y+25);
 	ctx.moveTo(x+60, y+20);
 	ctx.lineTo(x+120, y+20);
+	ctx.fillStyle="#000";
+	ctx.fillText(text, x+5, y+25, 60); 
+	ctx.fillStyle="#c2a894";
 	ctx.stroke();
 	ctx.closePath();
 }
@@ -139,7 +145,7 @@ function menu(num_of_obj){
 	if(canvas[num_of_obj][0]!="for_finish"){
 		text=prompt("введите текст блока");
 	}
-	if(text!=null){
+	if(text!=null && text!=""){
 		canvas[num_of_obj][3]=text;
 		ctx.clearRect(0, 0, a.width, a.height);
 		remember(canvas);
@@ -147,9 +153,9 @@ function menu(num_of_obj){
 }
 
 var x, y, draw, num=0;
-a.addEventListener('mousedown', e => {
-	x=e.clientX;
-	y=e.clientY;
+function start(event){
+	x=Math.trunc(event.clientX/120)*130+25;
+	y=Math.trunc(event.clientY/80)*80+25;
 	draw=1;
 	for(var i=0; i<canvas.length;i++){
 		if(x<=canvas[i][1]+120 && x>=canvas[i][1] && y<=canvas[i][2]+40 && y>=canvas[i][2]){
@@ -158,12 +164,12 @@ a.addEventListener('mousedown', e => {
 			break;
 		}
 	}
-});
+}
 
-a.addEventListener('mousemove', e => {
+function go(event){
 	if(draw>0){
-		x=Math.trunc(e.clientX/120)*130+25;
-		y=Math.trunc(e.clientY/80)*80+25;
+		x=Math.trunc(event.clientX/120)*130+25;
+		y=Math.trunc(event.clientY/80)*80+25;
 		if(draw==2){
 			ctx.clearRect(0, 0, a.width, a.height);
 			canvas[num][1]=x;
@@ -177,9 +183,9 @@ a.addEventListener('mousemove', e => {
 			draw_obj(obj, x, y);
 		}
 	}
-});
+}
 
-a.addEventListener('mouseup', e => {
+function finish(event){
 	if(draw>0){
 		if(draw==1){
 			canvas.push([obj, x, y, '']);
@@ -192,4 +198,11 @@ a.addEventListener('mouseup', e => {
 		y=undefined;
 		draw=0;
 	}
-});
+}
+a.addEventListener("mousedown", start);
+a.addEventListener("touchstart", start);
+a.addEventListener("mousemove", go);
+a.addEventListener("touchmove", go);
+a.addEventListener("mouseup", finish);
+a.addEventListener("touchend", finish);
+a.addEventListener("touchcancel", finish);
