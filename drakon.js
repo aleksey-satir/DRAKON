@@ -78,7 +78,7 @@ function for_finish(x, y, text){
 	ctx.stroke();
 	ctx.closePath();
 }
-function jump(x, y){
+function jump(x, y, text){
 	ctx.beginPath();
 	ctx.moveTo(x+60, y-20);
 	ctx.lineTo(x+60, y+60);
@@ -93,7 +93,7 @@ function jump(x, y){
 	ctx.stroke();
 	ctx.closePath();
 }
-function mark(x, y){
+function mark(x, y, text){
 	ctx.beginPath();
 	ctx.moveTo(x+60, y-20);
 	ctx.lineTo(x+60, y+60);
@@ -109,7 +109,7 @@ function mark(x, y){
 	ctx.closePath();
 }
 function draw_obj(o, x, y, text){
-	if(text==undefined){
+	if(text==null){
 		text=""
 	}
 	if(o=="action"){
