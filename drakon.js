@@ -154,8 +154,15 @@ function menu(num_of_obj){
 
 var x, y, draw, num=0;
 function start(event){
-	x=Math.trunc(event.clientX/120)*130+25;
-	y=Math.trunc(event.clientY/80)*80+25;
+	if ((event.clientX)&&(event.clientY)){
+		x=Math.trunc(event.clientX/120)*130+25;
+		y=Math.trunc(event.clientY/80)*80+25;
+	} 
+	else if(event.targetTouches){
+		x=Math.trunc(event.targetTouches[0].clientX/120)*130+25;
+		y=Math.trunc(event.targetTouches[0].clientY/80)*80+25;	
+		event.preventDefault();
+	}
 	draw=1;
 	for(var i=0; i<canvas.length;i++){
 		if(x<=canvas[i][1]+120 && x>=canvas[i][1] && y<=canvas[i][2]+40 && y>=canvas[i][2]){
@@ -168,8 +175,15 @@ function start(event){
 
 function go(event){
 	if(draw>0){
-		x=Math.trunc(event.clientX/120)*130+25;
-		y=Math.trunc(event.clientY/80)*80+25;
+		if ((event.clientX)&&(event.clientY)){
+			x=Math.trunc(event.clientX/120)*130+25;
+			y=Math.trunc(event.clientY/80)*80+25;
+		} 
+		else if(event.targetTouches){
+			x=Math.trunc(event.targetTouches[0].clientX/120)*130+25;
+			y=Math.trunc(event.targetTouches[0].clientY/80)*80+25;	
+			event.preventDefault();
+		}
 		if(draw==2){
 			ctx.clearRect(0, 0, a.width, a.height);
 			canvas[num][1]=x;
