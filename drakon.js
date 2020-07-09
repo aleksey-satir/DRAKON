@@ -35,9 +35,21 @@ function question(x, y, text){
 	ctx.moveTo(x+60, y+40);
 	ctx.lineTo(x+60, y+60);
 	ctx.fill();
-	ctx.fillStyle="#000";
-	ctx.fillText(text, x+45, y+25, 80); 
-	ctx.fillStyle="#c2a894";
+	ctx.moveTo(x+120, y+20);
+	ctx.lineTo(x+140, y+20);
+	ctx.moveTo(x+130, y+15);
+	ctx.lineTo(x+140, y+20);
+	ctx.lineTo(x+130, y+25);
+	ctx.moveTo(x+140, y);
+	ctx.lineTo(x+140, y+40);
+	if(typeof(text)=="object"){
+		ctx.fillStyle="#000";
+		ctx.fillText(text[0], x+45, y+25, 80);
+		ctx.fillText(text[1], x+15, y+55);
+		ctx.fillText(!text[1], x+115, y+15, 80);
+		ctx.fillText(text[2], x+115, y+35, 80);
+		ctx.fillStyle="#c2a894";
+	}
 	ctx.stroke();
 	ctx.closePath();
 }
@@ -110,7 +122,7 @@ function mark(x, y, text){
 }
 function draw_obj(o, x, y, text){
 	if(text==null){
-		text=""
+		text="";
 	}
 	if(o=="action"){
 		action(x, y, text);
@@ -145,6 +157,11 @@ function menu(num_of_obj){
 	if(canvas[num_of_obj][0]!="for_finish"){
 		text=prompt("введите текст блока");
 	}
+	if(canvas[num_of_obj][0]=="question"){
+		down_branch=confirm("нижняя ветка - true?");
+		ai=prompt("метка на которую переходить");
+		text=[text, down_branch, ai];
+	}
 	if(text!=null && text!=""){
 		canvas[num_of_obj][3]=text;
 		ctx.clearRect(0, 0, a.width, a.height);
@@ -155,11 +172,11 @@ function menu(num_of_obj){
 var x, y, draw, num=0;
 function start(event){
 	if ((event.clientX)&&(event.clientY)){
-		x=Math.trunc(event.clientX/120)*130+25;
+		x=Math.trunc(event.clientX/120)*145+25;
 		y=Math.trunc(event.clientY/80)*80+25;
 	} 
 	else if(event.targetTouches){
-		x=Math.trunc(event.targetTouches[0].clientX/120)*130+25;
+		x=Math.trunc(event.targetTouches[0].clientX/120)*145+25;
 		y=Math.trunc(event.targetTouches[0].clientY/80)*80+25;	
 		event.preventDefault();
 	}
@@ -176,11 +193,11 @@ function start(event){
 function go(event){
 	if(draw>0){
 		if ((event.clientX)&&(event.clientY)){
-			x=Math.trunc(event.clientX/120)*130+25;
+			x=Math.trunc(event.clientX/120)*145+25;
 			y=Math.trunc(event.clientY/80)*80+25;
 		} 
 		else if(event.targetTouches){
-			x=Math.trunc(event.targetTouches[0].clientX/120)*130+25;
+			x=Math.trunc(event.targetTouches[0].clientX/120)*145+25;
 			y=Math.trunc(event.targetTouches[0].clientY/80)*80+25;	
 			event.preventDefault();
 		}
